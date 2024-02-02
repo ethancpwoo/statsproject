@@ -4,14 +4,15 @@ import numpy as np
 
 def get_data() -> list | list | list | float | float:
     ls = []
+    n = 0 
 
     with open('Stats.csv', 'r', encoding='utf-8-sig') as data:
 
         for value in data:
-            value = value.strip() 
+            value = value.strip()
             ls.append(float(value))
+            n += 1
 
-    n = 92
     sqrt_n = 10.0
     ls = np.array(ls)
     bin_edges = []
@@ -28,13 +29,13 @@ def get_data() -> list | list | list | float | float:
         for value in ls: 
             if cur_int <= value and value < (cur_int + interval): 
                 counter += 1
-        heights.append(round(float(counter/n), 5))
+        heights.append(round(float(counter)/n, 5))
         counter = 0
         cur_int += interval
     
-    return ls, bin_edges, heights, max, min
+    return ls, bin_edges, heights, max, min, n
 
-def graph_rel_freq(bin_edges, heights):
+def graph_rel_freq(bin_edges, heights, n):
 
     plt.figure(figsize=[15, 8])
 
@@ -69,10 +70,9 @@ def graph_normal_dist(mean, std_dev, max, min, bin_edges, heights):
 
 def main():
 
-    n = 92
     sqrt_n = 10.0
 
-    ls, bin_edges, heights, max, min = get_data()
+    ls, bin_edges, heights, max, min, n = get_data()
 
     sample_mean = np.sum(ls)/n
     sample_variance = np.sum((ls - sample_mean)**2)/(n-1)
