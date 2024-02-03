@@ -53,19 +53,27 @@ def graph_rel_freq(bin_edges, heights, n):
 
 def graph_normal_dist(mean, std_dev, max, min, bin_edges, heights):
 
-    x = np.linspace(min, max, 1000)
+    x = np.linspace(min - 0.05, max + 0.05, 1000)
     y = ( 1 / ( ((2 * np.pi)** 1/2) * std_dev)) * (np.exp(-1 * (((x - mean)** 2) / (2 * (std_dev ** 2)))))
     plt.figure(figsize=[15, 8])
     plt.plot(x, y)
-    plt.bar(bin_edges, heights, width = 0.015, color='#0504aa',alpha=0.7, align="center")
-    plt.xlim(min - 0.02, max + 0.02)
-    plt.xticks(bin_edges, fontsize=15)
+    plt.xlim(min - 0.05, max + 0.05)  
+
+    interval = ((max + 0.05) - (min - 0.05))/10
+    ticks = []
+    counter = min - 0.05
+
+    while counter <= max + 0.05:
+        ticks.append(counter)
+        counter += interval
+    
+    plt.xticks(ticks, fontsize=7)
     plt.grid(axis='y', alpha=0.75)
     plt.xlabel('Value (KOhms)',fontsize=15)
     plt.ylabel('Relative Frequency',fontsize=15)
     plt.xticks(fontsize=15)
     plt.yticks(fontsize=15)
-    plt.title('Relative Frequency of 20 KOhm Resistors',fontsize=15)
+    plt.title('Probability Distribution Function of 20 KOhm Resistors',fontsize=15)
     plt.savefig('./out/std_distro')
 
 def main():
